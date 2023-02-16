@@ -3,37 +3,42 @@
 
 using namespace std;
 
-template<typename T>
-T* ar(int size)
+
+void remastered(int*& array, int& size, int add_size, int* add, int start)
 {
-	T* array = new T[size];
+	int* temp = new int[size];
 	for (size_t i = 0; i < size; i++)
 	{
-		array[i] = rand() % 100;
-		cout << array[i] << '\t';
+		temp[i] = array[i];
 	}
-	int num_pos;
-	cout << "\nEnter pos for changes ->";
-	cin >> num_pos;
-	int num_size;
-	cout << "\nEnter size for changes ->";
-	cin >> num_size;
-	array[num_pos] = array[num_pos + num_size];
-	int size_ch = size + num_size;
-	for (size_t i = num_pos-1; i < num_pos + num_size-1; i++)
+	int new_size = size + add_size;
+	int* rem_array = new int[new_size];
+
+	for (size_t i = 0; i < start-1; i++)
 	{
-		cout << "\nEnter a number -->";
-		int num;
-		cin >> num;
-		array[i] = num;
-		
+		rem_array[i] = temp[i];
 	}
-	cout << "\n\n\n";
-	for (size_t i = 0; i < size_ch; i++)
+
+	for (size_t i = 0; i < add_size; i++)
 	{
-		cout << array[i] << '\t';
+		rem_array[start-1 + i] = add[i];
 	}
-	return 0;
+
+	for (size_t i = start-1; i < size; i++)
+	{
+		rem_array[add_size + i] = temp[i];
+	}
+
+	size = new_size;
+	delete[] array;
+	array = rem_array;
+	delete[] temp;
+
+	cout << "\n\nRemastered\n";
+	for (size_t i = 0; i < size; i++)
+	{
+		cout << array[i] << "\t";
+	}
 }
 
 int main() {
@@ -41,5 +46,24 @@ int main() {
 	int size;
 	cout << "Enter a size ";
 	cin >> size;
-	int* array = ar<int>(size);
+	int* array = new int[size];
+	for (size_t i = 0; i < size; i++)
+	{
+		array[i] = rand() % 100;
+		cout << array[i] << "\t";
+	}
+	cout << "\nEnter a start ->";
+	int start;
+	cin >> start;
+	cout << "Enter a size ->";
+	int add_size;
+	cin >> add_size;
+	int* add = new int[add_size];
+	for (size_t i = 0; i < add_size; i++)
+	{
+		add[i] = rand() % 100;
+	}
+
+	remastered(array, size, add_size, add, start);
+	
 }
